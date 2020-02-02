@@ -7,21 +7,38 @@ import datetime as dt
 
 def scrape_all():
     # Initiate headless driver for deployment
-    browser = Browser('chrome', 'chromedriver.exe', headless=False)
+    browser = Browser('chrome', 'chromedriver.exe', headless=True)
     # use our mars_news function to pull this data
     news_title, news_paragraph = mars_news(browser)
 
+    # scrape hemisphere data
+    hemispheres = hemi_images(browser)
+
     # Run all scraping functions and store results in dictionary
+    # data = {"news_title": news_title, 
+    #         "news_paragraph": news_paragraph, 
+    #         "featured_image": featured_image(browser), 
+    #         "facts": mars_facts(), 
+    #         "last_modified": dt.datetime.now(),
+    #         "hemispheres": hemi_images(browser)}
     data = {"news_title": news_title, 
             "news_paragraph": news_paragraph, 
             "featured_image": featured_image(browser), 
             "facts": mars_facts(), 
             "last_modified": dt.datetime.now(),
-            "hemispheres": hemi_images(browser)}
+            "cerberusImage": hemispheres[0].get('img_url'),
+            "cerberusTitle": hemispheres[0].get('title'),
+            "schiaparelliImage": hemispheres[1].get('img_url'),
+            "schiaparelliTitle": hemispheres[1].get('title'),
+            "syrtisImage": hemispheres[2].get('img_url'),
+            "syrtisTitle": hemispheres[2].get('title'),
+            "vallesImage": hemispheres[3].get('img_url'),
+            "vallesTitle": hemispheres[3].get('title'),
+            }
     return data
 
 # Set the executable path and initialize the chrome browser in splinter
-browser = Browser('chrome', 'chromedriver.exe', headless=False)
+browser = Browser('chrome', 'chromedriver.exe', headless=True)
 
 # Create mars news function
 def mars_news(browser):
