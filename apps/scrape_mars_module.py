@@ -84,7 +84,13 @@ def featured_image(browser):
     html = browser.html
     img_soup = BeautifulSoup(html, 'html.parser')
 
-    # Find the relative image url: .get("src") pulls the link to the image.
+    # Find the relative image url
+
+    # The <figure /> and <a /> tags have the image link nested within them.
+
+    # figure.lede references the <figure /> tag and its class, lede
+    # a is the next tag nested inside the <figure /> tag. Then <img />
+    # .get("src") pulls the link to the image.
     try:
         img_url_rel = img_soup.select_one('figure.lede a img').get("src")
     except AttributeError:
@@ -137,11 +143,7 @@ def hemi_images(browser):
         html = browser.html
         img_soup = BeautifulSoup(html, 'html.parser')
 
-        # Find the relative image url: .get("src") pulls the link to the image.
-        try:
-            img_url_rel = img_soup.select_one('img.wide-image').get("src")
-        except AttributeError:
-            return None
+        img_url_rel = img_soup.select_one('img.wide-image').get("src")
 
         # Use the base URL to create an absolute URL
         hemiImg = f'https://astrogeology.usgs.gov{img_url_rel}'
